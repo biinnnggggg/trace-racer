@@ -1,5 +1,4 @@
 import numpy as np
-from typing import Any
 
 class Vec3D:
     """Wrapper class for a numpy array.
@@ -68,3 +67,10 @@ class Vec3D:
     @classmethod
     def get_unit_vector(cls, u : 'Vec3D') -> 'Vec3D':
         return cls(u.vec / u.length())
+    
+    # even more utility
+    def __eq__(self, other : 'Vec3D') -> bool:
+        return np.allclose(self.vec, other.vec) 
+
+
+Point3D = Vec3D

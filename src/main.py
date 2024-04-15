@@ -1,6 +1,6 @@
-from color import *
-from output import *
-from vec3d import *
+from .color import *
+from .output import *
+from .vec3d import *
 
 log = Output('log')
 stdout = Output('stdout')

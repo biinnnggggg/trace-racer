@@ -1,5 +1,14 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+def create_logger():
+    logging.basicConfig(filename='main.log', level=logging.INFO)
 
 if __name__ == '__main__':
+
+    create_logger()
+    logger.info('Started')
 
     # Image
     image_width : int = 256
@@ -11,6 +20,7 @@ if __name__ == '__main__':
     print('255')
     
     for j in range(image_height):
+        logger.info(f'\rScanlines remaining: {image_height - j}')
         for i in range(image_width):
             # Values from 0.0 to 1.0
             r = i / (image_width - 1)
@@ -23,3 +33,6 @@ if __name__ == '__main__':
             ib = int(255.999 * b)
 
             print(f'{ir} {ig} {ib}')
+    
+
+    logger.info('Finished')

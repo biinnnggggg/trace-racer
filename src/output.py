@@ -2,7 +2,7 @@ import logging
 
 class Output:
     modes = ['stdout', 'log']
-    logger_filename = '../main.log'
+    logger_filename = 'main.log'
 
     logger = logging.getLogger()
     logging.basicConfig(filename=logger_filename, level=logging.INFO)

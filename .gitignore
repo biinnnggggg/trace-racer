@@ -1,2 +1,6 @@
 data/image.ppm
 *.log
+
+__pycache__/
+*.py[cod]
+*$py.class

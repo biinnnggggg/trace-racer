@@ -6,13 +6,31 @@ from src.ray import *
 log = Output('log')
 stdout = Output('stdout')
 
+def hit_sphere(center : Point3D, radius : float, ray : Ray) -> bool:
+    q = ray.get_origin()
+    d = ray.get_direction()
+
+    a = d.dot(d)
+    b = 2*(q.dot(d) - d.dot(center))
+    x = q - center
+    c = x.dot(x) - radius**2
+
+    discriminant = b**2 - 4*a*c
+    return discriminant >= 0
+
+center = Point3D(0.0, 0.0, -1.0)
+radius = 0.5
+sphere_color = Color(1, 0, 0)
 
 def ray_color(ray : Ray) -> Color:
+    if hit_sphere(center, radius, ray):
+        return sphere_color
+
     # Lerp
     unit_dir : Vec3D = Vec3D.get_unit_vector(ray.get_direction())
     a = 0.5*(unit_dir.get_y() + 1.0)
     start_value : Color = Color(1.0, 1.0, 1.0) # white
-    end_value : Color = Color(0.0, 0.0, 1.0) # blue 
+    end_value : Color = Color(0.5, 0.7, 1.0) # blue 
     return start_value*(1-a) + end_value*a
 
 if __name__ == '__main__':

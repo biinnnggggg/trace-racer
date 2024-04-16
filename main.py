@@ -15,12 +15,15 @@ def hit_sphere(center : Point3D, radius : float, ray : Ray) -> float:
     a = d.dot(d)
     h = d.dot(center - q)
     x = q - center
-    c = x.dot(x) - radius*radius
+    c = x.dot(x) - radius * radius
 
-    discriminant = h*h - a*c
+    discriminant = h * h - a * c
     
-    if discriminant < 0: return -1
-    else: return (h - np.sqrt(discriminant)) / a # take negative since 'forward' is -z
+    if discriminant < 0: 
+        return -1
+    else:
+        # take negative since 'forward' is -z
+        return (h - np.sqrt(discriminant)) / a 
 
 center = Point3D(0.0, 0.0, -1.0)
 radius = 0.5
@@ -33,15 +36,15 @@ def ray_color(ray : Ray) -> Color:
     if t >= 0:
         point : Point3D = ray.at(t)
         norm : Vec3D = Vec3D.get_unit_vector(point - center)
-        sphere_color : Color = Color(norm.get_x() + 1, norm.get_y() + 1, norm.get_z() + 1)*0.5
+        sphere_color : Color = Color(norm.get_x() + 1, norm.get_y() + 1, norm.get_z() + 1) * 0.5
         return sphere_color
 
-    # Lerp
+    # sky -> linear interpolation from blue to white
     unit_dir : Vec3D = Vec3D.get_unit_vector(ray.get_direction())
-    a = 0.5*(unit_dir.get_y() + 1.0)
+    a = 0.5 * (unit_dir.get_y() + 1.0)
     start_value : Color = Color(1.0, 1.0, 1.0) # white
     end_value : Color = Color(0.5, 0.7, 1.0) # blue 
-    color : Color = start_value*(1-a) + end_value*a
+    color : Color = start_value * (1 - a) + end_value * a
     return color
 
 if __name__ == '__main__':
@@ -69,8 +72,8 @@ if __name__ == '__main__':
 
     # Calculate the location of the left upper pixel
     viewport_upper_left = camera_center - Vec3D(0, 0, focal_length) \
-         - viewport_u/2 - viewport_v/2
-    pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v)*0.5
+         - viewport_u / 2 - viewport_v / 2
+    pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5
 
 
     # Render
@@ -81,7 +84,7 @@ if __name__ == '__main__':
     for j in range(image_height):
         # log.write(f'\rScanlines remaining: {image_height - j}')
         for i in range(image_width):
-            pixel_center = pixel00_loc + pixel_delta_u*i + pixel_delta_v*j
+            pixel_center = pixel00_loc + pixel_delta_u * i + pixel_delta_v * j
             ray_dir = pixel_center - camera_center
             r = Ray(camera_center, ray_dir)
 

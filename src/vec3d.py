@@ -1,7 +1,5 @@
 import numpy as np
 
-from numpy.typing import NDArray
-
 class Vec3D:
     """Wrapper class for a numpy array.
     """
@@ -12,12 +10,17 @@ class Vec3D:
         self.vec = np.array([x, y, z])
     
     @classmethod
-    def of(self, vec) -> 'Vec3D':
+    def copy(cls, other : 'Vec3D') -> 'Vec3D':
+        assert np.shape(other.vec) == (3,)
+        return Vec3D(other.vec[0], other.vec[1], other.vec[2])
+
+    @classmethod
+    def of(cls, vec) -> 'Vec3D':
         assert np.shape(vec) == (3,)
         return Vec3D(vec[0], vec[1], vec[2])
     
     @classmethod
-    def zero(self) -> 'Vec3D':
+    def zero(cls) -> 'Vec3D':
         return Vec3D(0.0, 0.0, 0.0)
 
     # getters

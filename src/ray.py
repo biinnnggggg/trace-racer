@@ -5,5 +5,11 @@ class Ray:
         self.__pt = pt
         self.__dir = dir
 
+    def get_origin(self) -> Point3D:
+        return Vec3D.copy(self.__pt)
+
+    def get_direction(self) -> Vec3D:
+        return Vec3D.copy(self.__dir)
+
     def at(self, t : float) -> Point3D:
         return self.__pt + (self.__dir * t)

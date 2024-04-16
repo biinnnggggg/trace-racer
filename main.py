@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.color import *
 from src.output import *
 from src.vec3d import *
@@ -6,7 +8,7 @@ from src.ray import *
 log = Output('log')
 stdout = Output('stdout')
 
-def hit_sphere(center : Point3D, radius : float, ray : Ray) -> bool:
+def hit_sphere(center : Point3D, radius : float, ray : Ray) -> float:
     q = ray.get_origin()
     d = ray.get_direction()
 
@@ -16,14 +18,22 @@ def hit_sphere(center : Point3D, radius : float, ray : Ray) -> bool:
     c = x.dot(x) - radius**2
 
     discriminant = b**2 - 4*a*c
-    return discriminant >= 0
+    
+    if discriminant < 0: return -1
+    else: return (-b - np.sqrt(discriminant)) / (2*a) # take negative since 'forward' is -z
 
 center = Point3D(0.0, 0.0, -1.0)
 radius = 0.5
 sphere_color = Color(1, 0, 0)
 
 def ray_color(ray : Ray) -> Color:
-    if hit_sphere(center, radius, ray):
+    t = hit_sphere(center, radius, ray)
+
+    # intersects sphere
+    if t >= 0:
+        point : Point3D = ray.at(t)
+        norm : Vec3D = Vec3D.get_unit_vector(point - center)
+        sphere_color : Color = Color(norm.get_x() + 1, norm.get_y() + 1, norm.get_z() + 1)*0.5
         return sphere_color
 
     # Lerp
@@ -31,7 +41,8 @@ def ray_color(ray : Ray) -> Color:
     a = 0.5*(unit_dir.get_y() + 1.0)
     start_value : Color = Color(1.0, 1.0, 1.0) # white
     end_value : Color = Color(0.5, 0.7, 1.0) # blue 
-    return start_value*(1-a) + end_value*a
+    color : Color = start_value*(1-a) + end_value*a
+    return color
 
 if __name__ == '__main__':
 

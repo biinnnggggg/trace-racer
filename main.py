@@ -1,6 +1,7 @@
 import numpy as np
 
 from src.color import *
+from src.hittable import *
 from src.output import *
 from src.vec3d import *
 from src.ray import *
@@ -8,34 +9,13 @@ from src.ray import *
 log = Output('log')
 stdout = Output('stdout')
 
-def hit_sphere(center : Point3D, radius : float, ray : Ray) -> float:
-    q = ray.get_origin()
-    d = ray.get_direction()
-
-    a = d.dot(d)
-    h = d.dot(center - q)
-    x = q - center
-    c = x.dot(x) - radius * radius
-
-    discriminant = h * h - a * c
-    
-    if discriminant < 0: 
-        return -1
-    else:
-        # take negative since 'forward' is -z
-        return (h - np.sqrt(discriminant)) / a 
-
-center = Point3D(0.0, 0.0, -1.0)
-radius = 0.5
-sphere_color = Color(1, 0, 0)
+c = Point3D(0.0, 0.0, -1.0)
+r = 0.5
+sphere = Sphere(c, r)
 
 def ray_color(ray : Ray) -> Color:
-    t = hit_sphere(center, radius, ray)
-
-    # intersects sphere
-    if t >= 0:
-        point : Point3D = ray.at(t)
-        norm : Vec3D = Vec3D.get_unit_vector(point - center)
+    if sphere.hit(ray, 0, 5, hit_record := HitRecord()):
+        norm : Vec3D = hit_record.norm
         sphere_color : Color = Color(norm.get_x() + 1, norm.get_y() + 1, norm.get_z() + 1) * 0.5
         return sphere_color
 

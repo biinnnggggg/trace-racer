@@ -56,8 +56,7 @@ class Vec3D:
         return np.linalg.norm(self.vec)
     
     def length_squared(self) -> float:
-        length = self.length()
-        return length * length
+        return self.vec.dot(self.vec)
     
     # more utility
     def __str__(self) -> str:

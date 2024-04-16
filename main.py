@@ -13,14 +13,14 @@ def hit_sphere(center : Point3D, radius : float, ray : Ray) -> float:
     d = ray.get_direction()
 
     a = d.dot(d)
-    b = 2*(q.dot(d) - d.dot(center))
+    h = d.dot(center - q)
     x = q - center
     c = x.dot(x) - radius**2
 
-    discriminant = b**2 - 4*a*c
+    discriminant = h**2 - a*c
     
     if discriminant < 0: return -1
-    else: return (-b - np.sqrt(discriminant)) / (2*a) # take negative since 'forward' is -z
+    else: return (h - np.sqrt(discriminant)) / a # take negative since 'forward' is -z
 
 center = Point3D(0.0, 0.0, -1.0)
 radius = 0.5

@@ -26,16 +26,26 @@ class Hittable:
         raise NotImplementedError
     
 class HittableList(Hittable):
+    """A class that collects all Hittable objects in a list
+    """
     def __init__(self):
         self.obs = []
     
     def add(self, hob : Hittable) -> None:
+        """Adds a Hittable object to the list.
+        """
         self.obs.append(hob)
     
     def hit(self,
             r : Ray,
             r_t : Interval,
             rec : HitRecord) -> bool:
+        """Iterates through the Hittable objects and looks for the closest 
+        object hit by the ray. Returns True if an object is hit, and False
+        otherwise.
+
+        The method will also pass the hit information to the given rec.
+        """
         temp_rec : HitRecord = HitRecord()
         hit_any: bool = False
         nearest = r_t.max
@@ -56,11 +66,16 @@ class HittableList(Hittable):
 # Geometries
 
 class Sphere(Hittable):
+    """A class that represents a sphere geometry.
+    """
     def __init__(self, center : Point3D, radius : float) -> None:
         self.__center = center
         self.__radius = radius
 
     def hit(self, r : Ray, i : Interval, rec : HitRecord) -> bool:
+        """Returns True if the sphere is hit by the ray, and False otherwise.
+        The method will also pass the hit information to the given rec.
+        """
         q = r.get_origin()
         d = r.get_direction()
 

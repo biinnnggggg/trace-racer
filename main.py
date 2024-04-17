@@ -15,10 +15,15 @@ if __name__ == '__main__':
 
     Camera.aspect_ratio = 16 / 9
     Camera.image_width = 400
-    Camera.samples_per_pixel = 100
+    Camera.samples_per_pixel = 20
+
+    output_filepath = 'data/output.png'
 
     start = time.time()
-    Camera.render(world)
+
+    view = Camera.render(world)
+    view.save(output_filepath)
+    
     end = time.time()
 
     logger.write(end - start)

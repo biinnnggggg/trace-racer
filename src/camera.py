@@ -1,8 +1,23 @@
+from PIL import Image
+
 from .tracer_utility import *
 from .hittable import *
 
 log = Output('log')
 stdout = Output('stdout')
+
+class View:
+    """Represents the camera view.
+    """
+    def __init__(self, width : int, height : int) -> None:
+        self.image_array = [[None for _ in range(width)] for _ in range(height)]
+    
+    def paint(self, i : int, j : int, color : Color) -> None:
+        self.image_array[i][j] = process(color)
+    
+    def save(self, path : str) -> None:
+        image = Image.fromarray(np.array(self.image_array, dtype=np.uint8))
+        image.save(path)
 
 class Camera:
     """Defines the image dimensions and viewport.
@@ -12,6 +27,8 @@ class Camera:
     aspect_ratio : float = 1.0   # ratio of image width over height
     image_width : int = 100      # rendered image width in pixel count
     samples_per_pixel : int = 10 # count of random samples for each pixel
+    view : View = None
+    
 
     # private fields
     __image_height : int = None
@@ -22,25 +39,20 @@ class Camera:
     __pixel_delta_v : Vec3D = None
 
     @classmethod
-    def render(cls, world : Hittable) -> None:
+    def render(cls, world : Hittable) -> View:
         cls.__initialize()
-
-        # Render
-        stdout.write('P3')
-        stdout.write(f'{cls.image_width} {cls.__image_height}')
-        stdout.write('255')
         
-        for j in range(cls.__image_height):
-            # log.write(f'\rScanlines remaining: {image_height - j}')
-            for i in range(cls.image_width):
+        for i in range(cls.__image_height):
+            for j in range(cls.image_width):
                 pixel_color = Color(0.0, 0.0, 0.0)
                 for sample in range(cls.samples_per_pixel):
-                    r = cls.__get_ray(i, j)
-                    pixel_color += cls.__ray_color(r,world)
+                    x, y = j, i
+                    r = cls.__get_ray(x, y)
+                    pixel_color += cls.__ray_color(r, world)
 
-                write_color(stdout, pixel_color * cls.__pixel_samples_scale)
-
-        # log.write('\rDone.')
+                cls.view.paint(i, j, pixel_color * cls.__pixel_samples_scale)
+        
+        return cls.view
     
     @classmethod
     def __initialize(cls) -> None:
@@ -49,6 +61,8 @@ class Camera:
         cls.__image_height = max(1, cls.__image_height)
 
         cls.__pixel_samples_scale = 1.0 / cls.samples_per_pixel
+
+        cls.view = View(cls.image_width, cls.__image_height)
 
         # Camera
         focal_length = 1.0
@@ -71,15 +85,15 @@ class Camera:
             + (cls.__pixel_delta_u + cls.__pixel_delta_v) * 0.5
     
     @classmethod
-    def __get_ray(cls, i : int, j : int) -> Ray:
+    def __get_ray(cls, x : int, y : int) -> Ray:
         """Constructs a camera ray originating from the origin and directed at
-        randomly points around the pixel location (i, j)
+        randomly points around the pixel location (x, y)
         """
 
         offset = cls.__sample_square()
         pixel_sample = cls.__pixel00_loc \
-              + cls.__pixel_delta_u * (i + offset.get_x()) \
-              + cls.__pixel_delta_v * (j + offset.get_y())
+              + cls.__pixel_delta_u * (x + offset.get_x()) \
+              + cls.__pixel_delta_v * (y + offset.get_y())
         
         r_origin = cls.__center
         r_dir = pixel_sample - r_origin

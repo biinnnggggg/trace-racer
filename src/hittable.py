@@ -1,4 +1,7 @@
 from .tracer_utility import *
+from .ray import Ray
+from .vec3d import Point3D, Vec3D
+from .interval import Interval
 
 class HitRecord:
     """Records information about Ray and Hittable object intersection.

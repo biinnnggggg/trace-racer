@@ -1,5 +1,7 @@
 import numpy as np
 
+from .tracer_utility import *
+
 class Vec3D:
     """Wrapper class for a numpy array.
     """
@@ -22,6 +24,14 @@ class Vec3D:
     @classmethod
     def zero(cls) -> 'Vec3D':
         return Vec3D(0.0, 0.0, 0.0)
+    
+    @classmethod
+    def rand(cls) -> 'Vec3D':
+        return Vec3D(rand_float(), rand_float(), rand_float())
+    
+    @classmethod
+    def rand_in(cls, a : float, b : float) -> 'Vec3D':
+        return Vec3D(rand_float_in(a, b), rand_float_in(a, b), rand_float_in(a, b))
 
     # getters
     def get_x(self) -> float:

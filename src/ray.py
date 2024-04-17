@@ -1,4 +1,4 @@
-from .vec3d import Vec3D, Point3D
+from .vec3d import Point3D, Vec3D
 
 class Ray:
     """Represents a ray.

@@ -1,6 +1,8 @@
 from .tracer_utility import *
 
 class HitRecord:
+    """Records information about Ray and Hittable object intersection.
+    """
     def __init__(self,
                  p : Point3D=None,
                  normal : Vec3D=None,

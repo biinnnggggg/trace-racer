@@ -1,4 +1,4 @@
-data/image.ppm
+data/*.png
 *.log
 
 __pycache__/

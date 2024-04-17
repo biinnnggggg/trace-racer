@@ -1,10 +1,6 @@
-import numpy as np
-
-from src.color import *
+from src.tracer_utility import *
 from src.hittable import *
 from src.output import *
-from src.vec3d import *
-from src.ray import *
 
 log = Output('log')
 stdout = Output('stdout')
@@ -15,8 +11,8 @@ sphere = Sphere(c, r)
 
 def ray_color(ray : Ray) -> Color:
     if sphere.hit(ray, 0, 5, hit_record := HitRecord()):
-        norm : Vec3D = hit_record.norm
-        sphere_color : Color = Color(norm.get_x() + 1, norm.get_y() + 1, norm.get_z() + 1) * 0.5
+        n : Vec3D = hit_record.normal
+        sphere_color : Color = Color(n.get_x() + 1, n.get_y() + 1, n.get_z() + 1) * 0.5
         return sphere_color
 
     # sky -> linear interpolation from blue to white

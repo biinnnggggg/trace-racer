@@ -1,5 +1,5 @@
-from .vec3d import Vec3D
-from .output import Output
+from .output import *
+from .vec3d import *
 
 Color = Vec3D
 

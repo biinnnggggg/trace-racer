@@ -22,7 +22,7 @@ class HitRecord:
 class Hittable:
     """An abstract class all 'hittable' objects inherit from
     """
-    def hit(self, r : Ray, t_min : float, t_max : float, hit_record : HitRecord) -> bool:
+    def hit(self, r : Ray, r_t : Interval, hit_record : HitRecord) -> bool:
         raise NotImplementedError
     
 class HittableList(Hittable):
@@ -30,19 +30,18 @@ class HittableList(Hittable):
         self.obs = []
     
     def add(self, hob : Hittable) -> None:
-        self.obs.add(hob)
+        self.obs.append(hob)
     
     def hit(self,
             r : Ray,
-            t_min : float,
-            t_max : float,
+            r_t : Interval,
             rec : HitRecord) -> bool:
         temp_rec : HitRecord = HitRecord()
-        hit_any : bool
-        nearest = t_max
+        hit_any: bool = False
+        nearest = r_t.max
 
         for hob in self.obs:
-            if hob.hit(r, t_min, nearest, temp_rec):
+            if hob.hit(r, Interval(r_t.min, nearest), temp_rec):
                 hit_any = True
                 nearest = temp_rec.t
                 
@@ -61,7 +60,7 @@ class Sphere(Hittable):
         self.__center = center
         self.__radius = radius
 
-    def hit(self, r : Ray, t_min : float, t_max : float, rec : HitRecord) -> bool:
+    def hit(self, r : Ray, i : Interval, rec : HitRecord) -> bool:
         q = r.get_origin()
         d = r.get_direction()
 
@@ -81,11 +80,11 @@ class Sphere(Hittable):
         t2 = (h + sqrt_result) / a
         
         t = None
-        if t_min <= t2 <= t_max:
+        if i.contains(t2):
             t = t2
         
         # take negative since 'forward' is -z
-        if t_min <= t1 <= t_max:
+        if i.contains(t1):
             t = t1
         
         if t is None:

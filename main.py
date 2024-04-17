@@ -5,15 +5,11 @@ from src.output import *
 log = Output('log')
 stdout = Output('stdout')
 
-c = Point3D(0.0, 0.0, -1.0)
-r = 0.5
-sphere = Sphere(c, r)
-
-def ray_color(ray : Ray) -> Color:
-    if sphere.hit(ray, 0, 5, hit_record := HitRecord()):
+def ray_color(ray : Ray, world : HittableList) -> Color:
+    if world.hit(ray, Interval(0, INF), hit_record := HitRecord()):
         n : Vec3D = hit_record.normal
-        sphere_color : Color = Color(n.get_x() + 1, n.get_y() + 1, n.get_z() + 1) * 0.5
-        return sphere_color
+        color : Color = (n + Color(1, 1, 1)) * 0.5
+        return color
 
     # sky -> linear interpolation from blue to white
     unit_dir : Vec3D = Vec3D.get_unit_vector(ray.get_direction())
@@ -32,6 +28,11 @@ if __name__ == '__main__':
     # Calculate the image height
     image_height : int = int(image_width / aspect_ratio)
     image_height = max(1, image_height)
+
+    # Create world
+    world = HittableList()
+    world.add(Sphere(Point3D(0.0, 0.0, -1.0), 0.5))
+    world.add(Sphere(Point3D(0, -100.5, -1), 100))
 
     # Camera
     focal_length = 1.0
@@ -64,7 +65,7 @@ if __name__ == '__main__':
             ray_dir = pixel_center - camera_center
             r = Ray(camera_center, ray_dir)
 
-            pixel_color = ray_color(r)
+            pixel_color = ray_color(r, world)
             write_color(stdout, pixel_color)
 
     # log.write('\rDone.')

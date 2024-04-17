@@ -13,6 +13,10 @@ if __name__ == '__main__':
 
     logger = Output('log')
 
+    Camera.aspect_ratio = 16 / 9
+    Camera.image_width = 400
+    Camera.samples_per_pixel = 100
+
     start = time.time()
     Camera.render(world)
     end = time.time()

@@ -21,6 +21,13 @@ class Interval:
         """
         return self.min < x < self.max
     
+    def clamp(self, x : float) -> float:
+        """Returns the nearest value in the interval to the parameter x.
+        """
+        if x < self.min: return self.min
+        if x > self.max: return self.max
+        return x
+    
     def contains(self, x : float) -> bool:
         """Returns True if the parameter x is in the interval inclusive of
         endpoints, and False otherwise.

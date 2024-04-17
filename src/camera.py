@@ -114,7 +114,7 @@ class Camera:
 
         if world.hit(r, Interval(0.001, INF), hrec := HitRecord()):
             n = hrec.normal
-            d = Vec3D.rand_on_hemisphere(n)
+            d = n + Vec3D.rand_unit_vector()
             color = cls.__ray_color(Ray(hrec.p, d), depth - 1, world) * 0.5
             return color
 

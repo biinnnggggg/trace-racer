@@ -1,7 +1,7 @@
 from PIL import Image
 
 from .tracer_utility import *
-from .vec3d import Point3D, Vec3D
+from .vec3d import *
 from .ray import Ray
 from .interval import Interval
 from .hittable import HitRecord, Hittable, HittableList
@@ -33,6 +33,7 @@ class Camera:
     aspect_ratio : float = 1.0   # ratio of image width over height
     image_width : int = 100      # rendered image width in pixel count
     samples_per_pixel : int = 10 # count of random samples for each pixel
+    max_depth : int = 5          # max number of ray bounces
     view : View = None
     
 
@@ -54,7 +55,7 @@ class Camera:
                 for sample in range(cls.samples_per_pixel):
                     x, y = j, i
                     r = cls.__get_ray(x, y)
-                    pixel_color += cls.__ray_color(r, world)
+                    pixel_color += cls.__ray_color(r, cls.max_depth, world)
 
                 cls.view.paint(i, j, pixel_color * cls.__pixel_samples_scale)
         
@@ -108,18 +109,21 @@ class Camera:
         
     
     @classmethod
-    def __ray_color(cls, r : Ray, world : HittableList) -> Color:
-        if world.hit(r, Interval(0, INF), hit_record := HitRecord()):
-            n : Vec3D = hit_record.normal
-            color : Color = (n + Color(1, 1, 1)) * 0.5
+    def __ray_color(cls, r : Ray, depth : int, world : HittableList) -> Color:
+        if depth <= 0: return Color(0, 0, 0)
+
+        if world.hit(r, Interval(0.001, INF), hrec := HitRecord()):
+            n = hrec.normal
+            d = Vec3D.rand_on_hemisphere(n)
+            color = cls.__ray_color(Ray(hrec.p, d), depth - 1, world) * 0.5
             return color
 
         # sky -> linear interpolation from blue to white
-        unit_dir : Vec3D = Vec3D.get_unit_vector(r.get_direction())
+        unit_dir = Vec3D.get_unit_vector(r.get_direction())
         a = 0.5 * (unit_dir.get_y() + 1.0)
-        start_value : Color = Color(1.0, 1.0, 1.0) # white
-        end_value : Color = Color(0.5, 0.7, 1.0) # blue 
-        color : Color = start_value * (1 - a) + end_value * a
+        start_value = Color(1.0, 1.0, 1.0) # white
+        end_value = Color(0.5, 0.7, 1.0) # blue 
+        color = start_value * (1 - a) + end_value * a
         return color
 
     # helper functions
@@ -129,6 +133,6 @@ class Camera:
         """Returns a random sample point within the unit square centred at the
         origin.
         """
-        rand_x : float = rand_float_in(-0.5, 0.5)
-        rand_y : float = rand_float_in(-0.5, 0.5)
+        rand_x = rand_float_in(-0.5, 0.5)
+        rand_y = rand_float_in(-0.5, 0.5)
         return Point3D(rand_x, rand_y, 0.0)

@@ -9,13 +9,14 @@ if __name__ == '__main__':
     # Create world
     world = HittableList()
     world.add(Sphere(Point3D(0.0, 0.0, -1.0), 0.5))
-    world.add(Sphere(Point3D(0, -100.5, -1), 100))
+    world.add(Sphere(Point3D(0.0, -100.5, -1.0), 100))
 
     logger = Output('log')
 
     Camera.aspect_ratio = 16 / 9
-    Camera.image_width = 400
+    Camera.image_width = 200
     Camera.samples_per_pixel = 20
+    Camera.max_depth = 10
 
     output_filepath = 'data/output.png'
 

@@ -9,7 +9,8 @@ class Output:
 
     def __init__(self, mode='stdout') -> None:
         if mode not in self.modes:
-            raise ValueError(f'Invalid mode: {mode}. Please choose from {self.modes}.')
+            raise ValueError(f'Invalid mode: {mode}. Please choose from \
+                             {self.modes}.')
         self.mode = mode            
     
     def write(self, string : str) -> None:

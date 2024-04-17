@@ -31,7 +31,24 @@ class Vec3D:
     
     @classmethod
     def rand_in(cls, a : float, b : float) -> 'Vec3D':
-        return Vec3D(rand_float_in(a, b), rand_float_in(a, b), rand_float_in(a, b))
+        return Vec3D( \
+            rand_float_in(a, b), rand_float_in(a, b), rand_float_in(a, b))
+    
+    @classmethod
+    def rand_in_unit_sphere(cls) -> 'Vec3D':
+        while True:
+            p = cls.rand()
+            if p.length() < 1: return p
+
+    @classmethod
+    def rand_unit_vector(cls) -> 'Vec3D':
+        return cls.get_unit_vector(cls.rand_in_unit_sphere())
+    
+    @classmethod
+    def rand_on_hemisphere(cls, normal : 'Vec3D') -> 'Vec3D':
+        p = cls.rand_in_unit_sphere()
+        if p.dot(normal) >= 0.0: return p
+        return -p
 
     # getters
     def get_x(self) -> float:

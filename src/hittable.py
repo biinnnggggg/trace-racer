@@ -17,8 +17,8 @@ class HitRecord:
         self.front_face = front_face
 
     def set_face_normal(self, r : Ray, outward_normal : Vec3D) -> None:
-        """Sets the hit record normal vector. Note that the parameter `outward_normal`
-        is assumed to have unit length.
+        """Sets the hit record normal vector. Note that the parameter
+        `outward_normal` is assumed to have unit length.
         """
         assert np.isclose(outward_normal.length(), 1.0)
         self.front_face = r.get_direction().dot(outward_normal) < 0

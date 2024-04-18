@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     material_ground = Lambertian(np.array([0.8, 0.8, 0.0]))
     material_center = Lambertian(np.array([0.1, 0.2, 0.5]))
-    material_left = Metal(np.array([0.8, 0.8, 0.8]))
-    material_right = Metal(np.array([0.8, 0.6, 0.2]))
+    material_left = Metal(np.array([0.8, 0.8, 0.8]), 0.1)
+    material_right = Metal(np.array([0.8, 0.6, 0.2]), 0.9)
 
     world.add(Sphere(np.array([0.0, -100.5, -1.0]), 100.0, material_ground))
     world.add(Sphere(np.array([0.0, 0.0, -1.2]), 0.5, material_center))

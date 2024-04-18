@@ -21,7 +21,7 @@ def rand_in_unit_sphere():
 
 def rand_unit_vector():
         vec = rand_in_unit_sphere()
-        return vec / np.linalg.norm(vec)
+        return get_unit_vector(vec)
 
 def is_near_zero(vec) -> bool:
       return vec[0] < epsilon and vec[1] < epsilon and vec[2] < epsilon
@@ -29,3 +29,6 @@ def is_near_zero(vec) -> bool:
 
 def get_reflection(vec, normal):
       return vec - 2 * vec.dot(normal)*normal
+
+def get_unit_vector(vec):
+      return vec / np.linalg.norm(vec)

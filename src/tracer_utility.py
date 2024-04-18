@@ -5,6 +5,7 @@ INF : float = 10e12
 PI : float = 3.1415926535897932385
 
 RNG = np.random.default_rng()
+epsilon = 1e-8
 
 # Utility functions
 
@@ -21,3 +22,10 @@ def rand_in_unit_sphere():
 def rand_unit_vector():
         vec = rand_in_unit_sphere()
         return vec / np.linalg.norm(vec)
+
+def is_near_zero(vec) -> bool:
+      return vec[0] < epsilon and vec[1] < epsilon and vec[2] < epsilon
+    
+
+def get_reflection(vec, normal):
+      return vec - 2 * vec.dot(normal)*normal

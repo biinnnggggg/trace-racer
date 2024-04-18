@@ -3,23 +3,30 @@ import time
 from src.tracer_utility import *
 from src.hittable import *
 from src.camera import *
+from src.material import *
 from src.output import Output
 
 if __name__ == '__main__':
 
     # Create world
     world = HittableList()
-    world.add(Sphere(np.array([0.0, 0.0, -1.0]), 0.5))
-    # world.add(Sphere(np.array([2.0, 0.0, -3.0]), 0.5))
-    # world.add(Sphere(np.array([0.0, 0.0, -0.5]), 0.3))
-    world.add(Sphere(np.array([0.0, -100.5, -1.0]), 100))
+
+    material_ground = Lambertian(np.array([0.8, 0.8, 0.0]))
+    material_center = Lambertian(np.array([0.1, 0.2, 0.5]))
+    material_left = Metal(np.array([0.8, 0.8, 0.8]))
+    material_right = Metal(np.array([0.8, 0.6, 0.2]))
+
+    world.add(Sphere(np.array([0.0, -100.5, -1.0]), 100.0, material_ground))
+    world.add(Sphere(np.array([0.0, 0.0, -1.2]), 0.5, material_center))
+    world.add(Sphere(np.array([-1.0, 0.0, -1.0]), 0.5, material_left))
+    world.add(Sphere(np.array([1.0, 0.0, -1.0]), 0.5, material_right))    
 
     logger = Output('log')
 
     Camera.aspect_ratio = 16 / 9
     Camera.image_width = 400
-    Camera.samples_per_pixel = 100
-    Camera.max_depth = 50
+    Camera.samples_per_pixel = 30
+    Camera.max_depth = 20
 
     output_filepath = 'data/output.png'
 

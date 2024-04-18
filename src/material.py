@@ -2,6 +2,34 @@ from .tracer_utility import *
 from .hittable import HitRecord
 
 class Material:
-    def scatter(pt, dr, hrec : HitRecord, attenuation,
-                scattered_pt, scattered_dr) -> bool:
-        return False
+    def scatter(self, ray_pt, ray_dr, hrec : HitRecord) -> bool:
+        return False, None, None, None
+    
+
+class Lambertian(Material):
+    def __init__(self, albedo):
+        self.__albedo = albedo
+    
+    def scatter(self, ray_pt, ray_dr, hrec : HitRecord):
+        scatter_ray_dr = hrec.normal + rand_unit_vector()
+
+        if is_near_zero(scatter_ray_dr):
+            scatter_ray_dr = hrec.normal
+
+        scatter_ray_pt = hrec.p
+        attenuation = self.__albedo
+        return True, scatter_ray_pt, scatter_ray_dr, attenuation
+
+
+class Metal(Material):
+    def __init__(self, albedo):
+        self.__albedo = albedo
+    
+    def scatter(self, ray_pt, ray_dr, hrec : HitRecord):
+        reflected = get_reflection(ray_dr, hrec.normal)
+        scatter_ray_dr = reflected
+        scatter_ray_pt = hrec.p
+        attenuation = self.__albedo
+        return True, scatter_ray_pt, scatter_ray_dr, attenuation
+
+    

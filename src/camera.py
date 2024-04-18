@@ -77,16 +77,22 @@ class Camera:
             + (cls.__pixel_delta_u + cls.__pixel_delta_v) * 0.5
     
     @classmethod
-    def __ray_color(cls, pt, dr, depth : int, world : HittableList):
+    def __ray_color(cls, ray_pt, ray_dr, depth : int, world : HittableList):
+        black = np.array([0.0, 0.0, 0.0])
+
         if depth <= 0:
-            return np.array([0.0, 0.0, 0.0])
+            return black
 
-        if world.hit(pt, dr, Interval(0.001, INF), hrec := HitRecord()):
-            d = hrec.normal + rand_unit_vector()
-            return 0.5 * cls.__ray_color(hrec.p, d, depth-1, world)
-
+        if world.hit(ray_pt, ray_dr, Interval(0.001, INF), hrec := HitRecord()):
+            scattered, scatter_ray_pt, scatter_ray_dr, attenuation = \
+                hrec.mat.scatter(ray_pt, ray_dr, hrec)
+            
+            if scattered: return attenuation * cls.__ray_color(
+                scatter_ray_pt,scatter_ray_dr, depth-1, world)
+            return black
+        
         # skybox -> linear interpolation from blue to white
-        unit_dr = dr / np.linalg.norm(dr)
+        unit_dr = ray_dr / np.linalg.norm(ray_dr)
         a = 0.5 * (unit_dr[1] + 1.0)
         start_value = np.array([1.0, 1.0, 1.0]) # white
         end_value = np.array([0.5, 0.7, 1.0]) # blue 

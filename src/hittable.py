@@ -13,6 +13,7 @@ class HitRecord:
         self.normal = normal
         self.t = t
         self.front_face = front_face
+        self.mat = None
 
     def set_face_normal(self, pt, dr, outward_normal) -> None:
         """Sets the hit record normal vector. Note that the parameter
@@ -63,6 +64,7 @@ class HittableList(Hittable):
                 rec.normal = temp_rec.normal
                 rec.t = temp_rec.t
                 rec.front_face = temp_rec.front_face
+                rec.mat = temp_rec.mat
         
         return hit_any
 
@@ -72,9 +74,10 @@ class HittableList(Hittable):
 class Sphere(Hittable):
     """A class that represents a sphere geometry.
     """
-    def __init__(self, center, radius : float) -> None:
+    def __init__(self, center, radius : float, mat) -> None:
         self.__center = center
         self.__radius = radius
+        self.__mat = mat
 
     def hit(self, pt, dr, i : Interval, hrec : HitRecord) -> bool:
         """Returns True if the sphere is hit by the ray, and False otherwise.
@@ -112,6 +115,7 @@ class Sphere(Hittable):
         hrec.t = t
         hrec.p = pt + dr*t
         outward_normal = (hrec.p - self.__center) / self.__radius
-        hrec.set_face_normal(pt, dr, outward_normal)        
+        hrec.set_face_normal(pt, dr, outward_normal)
+        hrec.mat = self.__mat
 
         return True

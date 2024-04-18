@@ -22,7 +22,8 @@ class Interval:
         return self.min < x < self.max
     
     def clamp(self, x : float) -> float:
-        """Returns the nearest value in the interval to the parameter x.
+        """Returns the nearest value in the interval to the parameter x if x
+        if inside the interval, otherwise clamp returns the nearest endpoint.
         """
         if x < self.min: return self.min
         if x > self.max: return self.max

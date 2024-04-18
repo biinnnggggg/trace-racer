@@ -1,18 +1,21 @@
+import numpy as np
+
 from .output import *
-from .vec3d import *
 from .interval import Interval
 
-Color = Vec3D
+def process(pixel_color) -> tuple[int]:
+    r, g, b = pixel_color
 
-def process(pixel_color : Color) -> tuple[int]:
-    r = pixel_color.get_x()
-    g = pixel_color.get_y()
-    b = pixel_color.get_z()
+    rgb = (r, g, b)
+    rgb = map(linear_to_gamma, rgb)
+    
+    intensity : Interval = Interval(0.000, 0.999)
+    rgb = map(intensity.clamp, rgb)
 
     # translate the [0, 1] component values to the byte range [0, 255]
-    intensity : Interval = Interval(0.000, 0.999)
-    r = int(255.999 * intensity.clamp(r))
-    g = int(255.999 * intensity.clamp(g))
-    b = int(255.999 * intensity.clamp(b))
+    rgb = map(lambda x : int(256 * x), rgb)
+    return tuple(rgb)
 
-    return (r, g, b)
+def linear_to_gamma(linear_component : float) -> float:
+    if linear_component > 0: return np.sqrt(linear_component)
+    return 0

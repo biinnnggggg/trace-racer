@@ -1,4 +1,3 @@
-data/*.png
 *.log
 
 __pycache__/

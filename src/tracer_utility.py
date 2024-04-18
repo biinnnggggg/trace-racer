@@ -32,3 +32,10 @@ def get_reflection(vec, normal):
 
 def get_unit_vector(vec):
       return vec / np.linalg.norm(vec)
+
+def get_refraction(vec, normal, ref_index_ratio):
+      cos_theta = min(-vec.dot(normal), 1.0)
+      ref_vec_perp = ref_index_ratio * (vec + cos_theta*normal)
+      length = np.linalg.norm(ref_vec_perp)
+      ref_vec_para = -np.sqrt(1.0 - length*length) * normal
+      return ref_vec_perp + ref_vec_para

@@ -25,6 +25,20 @@ class TestInterval(unittest.TestCase):
         self.assertFalse(interval.surrounds(3))
         self.assertFalse(interval.surrounds(-1))
 
+    def test_clamp(self):
+        interval = Interval(0, 2)
+
+        # inside
+        self.assertEqual(1, interval.clamp(1))
+
+        # boundary
+        self.assertEqual(0, interval.clamp(0))
+        self.assertEqual(2, interval.clamp(2))
+
+        # outside
+        self.assertEqual(0, interval.clamp(-1))
+        self.assertEqual(2, interval.clamp(3))
+
     def test_contains(self):
         interval = Interval(0, 2)
 

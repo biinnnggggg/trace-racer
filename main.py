@@ -32,8 +32,8 @@ if __name__ == '__main__':
 
     # Camera
     Camera.aspect_ratio = 16 / 9
-    Camera.image_width = 400
-    Camera.samples_per_pixel = 30
+    Camera.image_width = 600
+    Camera.samples_per_pixel = 100
     Camera.max_depth = 20
 
     output_filepath = 'data/output.png'

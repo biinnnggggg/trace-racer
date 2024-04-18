@@ -24,15 +24,15 @@ def __name__ == '__main__'
         world.add(sphere)
 
     Camera.aspect_ratio = 16 / 9
-    Camera.image_width = 400
-    Camera.samples_per_pixel = 30
+    Camera.image_width = 600
+    Camera.samples_per_pixel = 100
     Camera.max_depth = 20
 
     # ...
 ```
-This render took 587.825 seconds to render properly. Given that the resolution
-isn't very high, this performance is quite lackluster but also expected. Efforts
-were made to ensure that as much of the code is vectorized.
+This render took 3928.0768167972565 seconds to render properly. Given that the
+resolution isn't very high, this performance is disappointing but expected.
+Efforts were made to ensure that as much of the code is vectorized.
 
 ![Latest Render](data/output.png)
 

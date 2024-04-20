@@ -14,13 +14,20 @@ def deg_to_rad(degrees : float) -> float:
     """
     return degrees * PI / 180.0
 
-def rand_in_unit_sphere():
+# Rejection sampling # slow
+def rand_in_unit_ball():
         while True:
             p = RNG.random(3)
-            if np.linalg.norm(p) < 1: return p
+            if p.dot(p) < 1: return p
+
+# Rejection sampling # slow
+def rand_in_unit_disk():
+        while True:
+            p = RNG.random(2)
+            if p.dot(p) < 1: return p
 
 def rand_unit_vector():
-        vec = rand_in_unit_sphere()
+        vec = rand_in_unit_ball()
         return get_unit_vector(vec)
 
 def is_near_zero(vec) -> bool:

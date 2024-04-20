@@ -49,7 +49,7 @@ class Dielectric(Material):
 
         # check for total internal reflection
         cos_theta = min(-unit_dr.dot(hrec.normal), 1.0)
-        sin_theta = np.sqrt(1.0 - cos_theta*cos_theta)
+        sin_theta = np.sqrt(1.0 - cos_theta * cos_theta)
 
         cannot_refract = ri * sin_theta > 1.0
 
@@ -67,5 +67,5 @@ class Dielectric(Material):
 
     def reflectance(self, cos, ri):
         r0 = (1 - ri) / (1 + ri)
-        r0 = r0*r0
-        return r0 + (1 - r0)*pow((1 - cos), 5)
+        r0 = r0 * r0
+        return r0 + (1 - r0) * pow((1 - cos), 5)

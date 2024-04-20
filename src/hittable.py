@@ -90,8 +90,7 @@ class Sphere(Hittable):
         x = self.__center - q
         h = d.dot(x)
         c = x.dot(x) - self.__radius * self.__radius
-
-        discriminant = h*h - a*c
+        discriminant = h * h - a * c
         
         if discriminant < 0: 
             return False
@@ -114,7 +113,7 @@ class Sphere(Hittable):
             return False
         
         hrec.t = t
-        hrec.p = pt + dr*t
+        hrec.p = pt + dr * t
         outward_normal = (hrec.p - self.__center) / self.__radius
         hrec.set_face_normal(pt, dr, outward_normal)
         hrec.mat = self.__mat

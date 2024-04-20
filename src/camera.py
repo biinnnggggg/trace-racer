@@ -65,7 +65,7 @@ class Camera:
         # Camera
         focal_length = np.linalg.norm(cls.look_from - cls.look_at)
 
-        theta = deg_to_rad(cls.vfov / 2)
+        theta = deg_to_rad(cls.vfov * 0.5)
         viewport_height = 2 * focal_length * np.tan(theta)
         viewport_width = viewport_height * cls.image_width / cls.__image_height
     
@@ -86,7 +86,7 @@ class Camera:
 
         # Calculate the location of the left upper pixel
         viewport_upper_left = cls.__center - focal_length * cls.__w \
-            - viewport_u / 2 - viewport_v / 2
+            - viewport_u * 0.5 - viewport_v * 0.5
         
         cls.__pixel00_loc = viewport_upper_left \
             + (cls.__pixel_delta_u + cls.__pixel_delta_v) * 0.5
@@ -111,7 +111,7 @@ class Camera:
         a = 0.5 * (unit_dr[1] + 1.0)
         start_value = np.array([1.0, 1.0, 1.0]) # white
         end_value = np.array([0.5, 0.7, 1.0]) # blue 
-        color = start_value * (1-a) + end_value * a
+        color = start_value * (1 - a) + end_value * a
         return color
 
     @classmethod

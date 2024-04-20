@@ -33,8 +33,14 @@ if __name__ == '__main__':
     # Camera
     Camera.aspect_ratio = 16 / 9
     Camera.image_width = 600
-    Camera.samples_per_pixel = 100
+    Camera.samples_per_pixel = 60
     Camera.max_depth = 20
+
+
+    Camera.vfov = 20
+    Camera.look_from = np.array([-2.0, 2.0, 1.0])
+    Camera.look_at = np.array([0.0, 0.0, -1.0])
+    Camera.vup = np.array([0.0, 1.0 ,0.0])
 
     output_filepath = 'data/output.png'
 

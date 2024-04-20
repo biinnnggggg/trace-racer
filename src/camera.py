@@ -27,8 +27,11 @@ class Camera:
     image_width : int = 100      # rendered image width in pixel count
     samples_per_pixel : int = 10 # count of random samples for each pixel
     max_depth : int = 5          # max number of ray bounces
+    vfov : float = 90            # vertical field of view in degrees
     view : View = None
-    
+    look_at = np.array([0.0, 0.0, -1.0])   # camera location
+    look_from = np.array([0.0, 0.0, 0.0])  # the point the camera is looking at
+    vup = np.array([0.0, 1.0, 0.0])
 
     # private fields
     __image_height : int = None
@@ -36,6 +39,9 @@ class Camera:
     __pixel00_loc = None
     __pixel_delta_u = None
     __pixel_delta_v = None
+    __u = None
+    __v = None
+    __w = None
 
     @classmethod
     def render(cls, world : Hittable) -> View:
@@ -57,20 +63,29 @@ class Camera:
         cls.view = View(cls.image_width, cls.__image_height)
 
         # Camera
-        focal_length = 1.0
-        viewport_height = 2.0
+        focal_length = np.linalg.norm(cls.look_from - cls.look_at)
+
+        theta = deg_to_rad(cls.vfov / 2)
+        viewport_height = 2 * focal_length * np.tan(theta)
         viewport_width = viewport_height * cls.image_width / cls.__image_height
-        cls.__center = np.array([0.0, 0.0, 0.0])
+    
+        w = get_unit_vector(cls.look_from - cls.look_at)
+        u = get_unit_vector(np.cross(cls.vup, w)) 
+        v = np.cross(w, u)
+        
+        cls.__w, cls.__v, cls.__u = w, v, u
+
+        cls.__center = cls.look_from
 
         # Calculate the viewport vectors
-        viewport_u = np.array([viewport_width, 0, 0])
-        viewport_v = np.array([0, -viewport_height, 0])
+        viewport_u = viewport_width * cls.__u
+        viewport_v = viewport_height * -cls.__v
 
-        cls.__pixel_delta_u = viewport_u / cls.image_width
+        cls.__pixel_delta_u =  viewport_u / cls.image_width 
         cls.__pixel_delta_v = viewport_v / cls.__image_height
 
         # Calculate the location of the left upper pixel
-        viewport_upper_left = cls.__center - np.array([0, 0, focal_length]) \
+        viewport_upper_left = cls.__center - focal_length * cls.__w \
             - viewport_u / 2 - viewport_v / 2
         
         cls.__pixel00_loc = viewport_upper_left \

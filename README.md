@@ -23,28 +23,36 @@ def __name__ == '__main__'
     for sphere in spheres:
         world.add(sphere)
 
+    # Camera
     Camera.aspect_ratio = 16 / 9
     Camera.image_width = 600
-    Camera.samples_per_pixel = 100
+    Camera.samples_per_pixel = 60
     Camera.max_depth = 20
+
+
+    Camera.vfov = 20
+    Camera.look_from = np.array([-2.0, 2.0, 1.0])
+    Camera.look_at = np.array([0.0, 0.0, -1.0])
+    Camera.vup = np.array([0.0, 1.0 ,0.0])
 
     # ...
 ```
-This render took 3928.0768167972565 seconds to render properly. Given that the
-resolution isn't very high, this performance is disappointing but expected.
+This image took 55 min to render. Given that the resolution isn't very high, and
+the sampling level is quite low, this performance is disappointing but expected.
 Efforts were made to ensure that as much of the code is vectorized.
-
 ![Latest Render](data/output.png)
 
 ### Upcoming features
-1. Positionable camera
-2. Blur, field of view, depth of field,...
+1. ~~Positionable camera~~
+2. Blur, ~~field of view~~, depth of field,...
 3. Textures
 4. More unit tests, and preliminary integration testing
 5. Cubes and polyhedrons
+6. world description language
 
 ### Resources I used along the way:
 - https://docs.python-guide.org/writing/structure/
 - https://docs.python-guide.org/writing/tests/
 - https://docs.python.org/3/library/logging.html
 - https://stackoverflow.com/questions/33189208/vs-for-a-power-of-2-operation
+- https://www.youtube.com/watch?v=TrqK-atFfWY

@@ -26,12 +26,11 @@ def rand_unit_vector():
 def is_near_zero(vec) -> bool:
       return vec[0] < epsilon and vec[1] < epsilon and vec[2] < epsilon
     
+def get_unit_vector(vec):
+      return vec / np.linalg.norm(vec)
 
 def get_reflection(vec, normal):
       return vec - 2 * vec.dot(normal)*normal
-
-def get_unit_vector(vec):
-      return vec / np.linalg.norm(vec)
 
 def get_refraction(vec, normal, ref_index_ratio):
       cos_theta = min(-vec.dot(normal), 1.0)

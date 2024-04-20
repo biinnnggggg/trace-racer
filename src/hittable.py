@@ -89,7 +89,7 @@ class Sphere(Hittable):
         a = d.dot(d)
         x = self.__center - q
         h = d.dot(x)
-        c = x.dot(x) - self.__radius*self.__radius
+        c = x.dot(x) - self.__radius * self.__radius
 
         discriminant = h*h - a*c
         
@@ -98,8 +98,9 @@ class Sphere(Hittable):
         
         sqrt_result = np.sqrt(discriminant)
 
-        t1 = (h - sqrt_result) / a
-        t2 = (h + sqrt_result) / a
+        inv_a = 1 / a
+        t1 = (h - sqrt_result) * inv_a
+        t2 = (h + sqrt_result) * inv_a
         
         t = None
         if i.contains(t2):

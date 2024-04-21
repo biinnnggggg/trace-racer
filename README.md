@@ -21,7 +21,7 @@ The ray tracer was written in Python and Numpy so there is some implicit overhea
 
 ```bash
 git clone https://github.com/biinnnggggg/trace-racer.git
-``
+```
 
 5. Install the necessary dependencies by running
 

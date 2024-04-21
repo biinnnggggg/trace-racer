@@ -1,9 +1,14 @@
+import time
+
 from PIL import Image
 
 from .tracer_utility import *
 from .interval import Interval
 from .hittable import HitRecord, Hittable, HittableList
 from .color import process
+from .output import Output
+
+out = Output('stdout')
 
 class View:
     """Represents the camera view.
@@ -140,15 +145,15 @@ class Camera:
         mat_shape = (cls.samples_per_pixel, 3)
         pixel_samples = np.tile(cls.__pixel00_loc,         
                                 cls.samples_per_pixel).reshape(mat_shape) \
-                        + x_s * cls.__pixel_delta_u.reshape(1, -1)        \
-                        + y_s * cls.__pixel_delta_v.reshape(1, -1)
+                        + x_s * cls.__pixel_delta_u      \
+                        + y_s * cls.__pixel_delta_v
         
         centers = np.tile(cls.__center, cls.samples_per_pixel).reshape(mat_shape)
         
         if cls.defocus_angle <= 0:
             r_pts = centers
         else:
-            r_pts = np.array([rand_in_unit_disk() for _ in range(cls.samples_per_pixel)])
+            r_pts = np.array([rand_in_unit_disk() for _ in range(cls.samples_per_pixel)]) # need to optimise this
             r_pts = r_pts.dot(np.array([cls.__defocus_disk_u, cls.__defocus_disk_v]))
             r_pts = centers + r_pts
 

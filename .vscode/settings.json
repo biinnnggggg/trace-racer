@@ -8,6 +8,11 @@
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "editor.lineNumbers": "relative"
+    "editor.lineNumbers": "relative",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorBlinking": "phase",
+    "editor.smoothScrolling": true,
+    "editor.mouseWheelScrollSensitivity": 3,
+    "workbench.list.smoothScrolling": true
 
 }

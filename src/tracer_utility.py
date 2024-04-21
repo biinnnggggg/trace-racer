@@ -27,7 +27,7 @@ def rand_in_unit_disk():
             if p.dot(p) < 1: return p
 
 def rand_unit_vector():
-        vec = rand_in_unit_ball()
+        vec = np.random.normal(size=3)
         return get_unit_vector(vec)
 
 def is_near_zero(vec) -> bool:

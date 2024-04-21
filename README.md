@@ -5,22 +5,33 @@ A toy ray-tracer written in Python. The implementation loosely follows the
 
 Below is an image of the latest render from the code:
 
-This image took 2.5 hr to render. Given that the resolution isn't very high, and
-the sampling level is quite low, this performance is disappointing but expected.
+This image took 2.5 hr to render which is slow, given the low render resolution and sampling level.
+The ray tracer was written in Python and Numpy so there is some implicit overhead.
+
 ![Latest Render](data/final-render.png)
 
-## Quick start
+## Quick Start
+
+### Installation Guide
 
 1. Ensure that you have Python 3.11 or above installed on your computer.
-2. Clone the repo and install any necessary dependencies by running these commands in the terminal:
+2. Open up the command terminal and navigate to the directory you want to install `trace-racer` in via
+`cd` commands.
+4. Clone the repo by entering the command:
 
 ```bash
 git clone https://github.com/biinnnggggg/trace-racer.git
+``
 
+5. Install the necessary dependencies by running
+
+```
 pip install numpy, PIL
 ```
 
-3. Describe world to render in `main.py` and run the file.
+### How to use
+
+1. Describe world to render in `main.py` and run the file. An example and render is given below:
 
 ```py
 if __name__ == '__main__':
@@ -74,8 +85,7 @@ if __name__ == '__main__':
 
 ```
 
-4. The render output should be saved as `data/output.png`.
-5. The render log should be saved as `main.log`
+2. The render output should be saved as `data/output.png` and render log can be found in `main.log`
 
 ## Upcoming features
 
